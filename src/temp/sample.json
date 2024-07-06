@@ -1,0 +1,20 @@
+{
+    "userId": {}
+}
+
+{
+    "organizationId": {
+        "name": "Test",
+        "ownerId": "userId",
+        "projects": []
+    }
+}
+
+{
+    "taskId": {
+        "code": "",
+        "link": "",
+        "estimation": [],
+        "avg-estimation": 10
+    }
+}
