@@ -29,12 +29,7 @@ export const roomStore = defineStore('roomStore', () => {
   const useAuthStore = authStore()
 
   async function initRoomDb() {
-    collectionRef = collection(
-      db,
-      collectionsData.userTable,
-      useAuthStore.userId,
-      collectionsData.roomTable
-    )
+    collectionRef = collection(db, collectionsData.roomTable)
     notesQueryByTimestamp = query(
       collectionRef,
       orderBy(collectionsData.orderByField, collectionsData.order)
@@ -53,6 +48,7 @@ export const roomStore = defineStore('roomStore', () => {
       timeStamp,
       name: roomName.value,
       createdBy: useAuthStore.userEmail,
+      ownerId: useAuthStore.userId,
       tickets: []
     })
   }

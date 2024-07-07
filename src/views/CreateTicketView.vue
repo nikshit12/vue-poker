@@ -36,13 +36,14 @@ const useRoomStore = roomStore()
 const route = useRoute()
 const router = useRouter()
 const ticketName = ref('')
+const roomId = route.params.id
 const tickets = computed(() => {
-    return useRoomStore.getTickets(route.params.id)
+    return useRoomStore.getTickets(roomId)
 })
 
 function handleEstimationClick(ticket) {
     useRoomStore.currentTicket = ticket
-    router.push(`/estimate/${ticket.ticketId}`)
+    router.push(`/room/${roomId}/estimate/${ticket.ticketId}`)
 }
 
 function handleAdd() {

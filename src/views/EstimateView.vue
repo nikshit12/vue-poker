@@ -7,6 +7,7 @@
             <button class="button ml-3" :disabled="useTimerStore.isTimerRunning"
                 @click="showEstimation = !showEstimation">{{ showEstimation ? 'Hide' : 'Show' }}
                 Estimation</button>
+            <button class="button ml-3" @click="handleCopy">Copy link</button>
         </div>
         <timer></timer>
         <div class="players-container">
@@ -24,10 +25,16 @@ import { playerStore } from '@/stores/playerStore'
 import timer from '@/components/timer.vue'
 import { ref } from 'vue';
 import { timerStore } from '@/stores/timerStore';
+import useCopy from '@/utils/useCopy'
 const useRoomStore = roomStore()
 const usePlayerStore = playerStore()
 const useTimerStore = timerStore()
 const showEstimation = ref(false)
+
+function handleCopy() {
+    const url = `${window.location.href}/vote`
+    useCopy().copyToClipboard(url)
+}
 </script>
 <style lang="scss" scoped>
 .players-container {

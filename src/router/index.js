@@ -6,6 +6,7 @@ import AuthView from '@/views/AuthView.vue'
 import CreateTicketView from '@/views/CreateTicketView.vue'
 import { authStore } from '@/stores/authStore'
 import EstimateView from '@/views/EstimateView.vue'
+import VoteTicketView from '@/views/VoteTicketView.vue'
 const routes = [
   {
     path: '/',
@@ -33,9 +34,19 @@ const routes = [
     component: CreateTicketView
   },
   {
-    path: '/estimate/:id',
+    path: '/room/:id/estimate/:id',
     name: 'estimateticket',
     component: EstimateView
+  },
+  {
+    path: '/room/:roomId/estimate/:ticketId/vote',
+    name: 'voteticket',
+    component: VoteTicketView,
+    props: (route) => ({
+      roomId: route.params.roomId,
+      ticketId: route.params.ticketId,
+      isVoteMode: route.params.ticketId != null && route.params.roomId != null
+    })
   }
 ]
 const router = createRouter({
@@ -45,6 +56,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const useAuthStore = authStore()
+  if (to.path.split('/')[to.path.split('/').length - 1] == 'vote' && to.matched.length == 1) {
+    return true
+  }
   if (!useAuthStore.isLoggedIn && to.name != 'auth') {
     return { name: 'auth' }
   }
