@@ -57,14 +57,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
   const useAuthStore = authStore()
-  if (
-    (to.path.split('/')[to.path.split('/').length - 1] == 'vote' && to.matched.length == 1) ||
-    (from.path.split('/')[from.path.split('/').length - 1] == 'vote' && from.matched.length == 1)
-  ) {
-    voterStore().voteMode = true
-    voterStore().roomId = to.params.roomId
-    return true
-  }
   if (!useAuthStore.isLoggedIn && to.name != 'auth') {
     return { name: 'auth' }
   }
