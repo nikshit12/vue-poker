@@ -42,19 +42,9 @@ const routes = [
     component: ShowTicketView
   },
   {
-    path: '/room/:id/estimate/:id',
+    path: '/estimate/:id',
     name: 'estimateticket',
     component: EstimateView
-  },
-  {
-    path: '/room/:roomId/estimate/:ticketId/vote',
-    name: 'voteticket',
-    component: VoteTicketView,
-    props: (route) => ({
-      roomId: route.params.roomId,
-      ticketId: route.params.ticketId,
-      isVoteMode: route.params.ticketId != null && route.params.roomId != null
-    })
   }
 ]
 const router = createRouter({

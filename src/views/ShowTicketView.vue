@@ -7,7 +7,7 @@
                     <div class="mb-2">
                         <p>{{ ticket.name.toUpperCase() }}</p>
                     </div>
-                    <button class="button" @click="handleEstimationClick(ticket)">Estimate</button>
+                    <button class="button" @click="handleEstimate(ticket.id)">Estimate</button>
                 </div>
             </div>
         </div>
@@ -26,6 +26,9 @@ const route = useRoute()
 const router = useRouter()
 const roomId = route.params.id
 
+function handleEstimate(id) {
+    router.push(`/estimate/${id}`)
+}
 
 onMounted(() => {
     useTicketStore.getCurrentRoomTickets(roomId)
