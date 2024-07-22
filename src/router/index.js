@@ -7,6 +7,7 @@ import CreateTicketView from '@/views/CreateTicketView.vue'
 import { authStore } from '@/stores/authStore'
 import EstimateView from '@/views/EstimateView.vue'
 import VoteTicketView from '@/views/VoteTicketView.vue'
+import ShowTicketView from '@/views/ShowTicketView.vue'
 import { voterStore } from '@/stores/voterStore'
 import JoinView from '@/views/JoinView.vue'
 const routes = [
@@ -34,6 +35,11 @@ const routes = [
     path: '/room/:id',
     name: 'createticket',
     component: CreateTicketView
+  },
+  {
+    path: '/join-room/:id',
+    name: 'showticket',
+    component: ShowTicketView
   },
   {
     path: '/room/:id/estimate/:id',

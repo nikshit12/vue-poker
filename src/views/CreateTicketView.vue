@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-        <h4 class="title is-4">Your Tickets</h4>
+        <h4 class="title is-4">Tickets</h4>
         <div class="grid is-col-min-12">
             <div v-for="ticket in useTicketStore.tickets" :key="ticket" class="cell">
                 <div class="card p-4">
@@ -28,6 +28,7 @@
     </div>
 </template>
 <script setup>
+import { authStore } from "@/stores/authStore";
 import { roomStore } from "@/stores/roomStore.js";
 import { ticketStore } from "@/stores/ticketStore.js";
 import { computed, onMounted, ref } from "vue";

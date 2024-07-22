@@ -16,6 +16,10 @@ export const authStore = defineStore('authStore', () => {
   const userId = ref(null)
   const isLoggedIn = ref(false)
 
+  function isMainUser(visitorId) {
+    return userId.value == visitorId
+  }
+
   function init() {
     if (!voterStore().voteMode) {
       onAuthStateChanged(auth, (user) => {
@@ -66,5 +70,5 @@ export const authStore = defineStore('authStore', () => {
     roomStore().initRoomDb()
   }
 
-  return { userEmail, userId, isLoggedIn, init, registerUser, loginUser, logoutUser }
+  return { userEmail, userId, isLoggedIn, init, registerUser, loginUser, logoutUser, isMainUser }
 })

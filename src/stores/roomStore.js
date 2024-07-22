@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import {
   collection,
@@ -13,7 +13,6 @@ import {
 } from 'firebase/firestore'
 import { db } from '@/firebase/firebase.js'
 import { authStore } from '@/stores/authStore'
-import useUniqueId from '@/utils/useUniqueId'
 const collectionsData = {
   userTable: 'users',
   roomTable: 'rooms',
@@ -30,6 +29,7 @@ export const roomStore = defineStore('roomStore', () => {
   const currentTicket = ref({})
   const useAuthStore = authStore()
   const searchedRooms = ref([])
+
   async function initRoomDb() {
     roomsCollectionRef = collection(db, collectionsData.roomTable)
     roomsQueryByTimestamp = query(

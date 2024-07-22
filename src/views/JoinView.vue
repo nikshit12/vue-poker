@@ -22,18 +22,29 @@
                         <p>{{ room.name }}</p>
                         <span>Created by:</span> <span>{{ room.ownerEmail }}</span>
                     </div>
-                    <button class="button" @click="$router.push(`/room/${room.id}`)">Join</button>
+                    <button class="button" @click="handleJoin(room.id, room.ownerId)">Join</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script setup>
+import { authStore } from "@/stores/authStore";
 import { roomStore } from "@/stores/roomStore";
 import { ref } from "vue";
-
+import { useRoute, useRouter } from "vue-router";
+const router = useRouter()
+const route = useRoute()
 const searchText = ref('')
 function hanldeSearch() {
     roomStore().searchRoomByName(searchText.value)
+}
+
+function handleJoin(roomId, ownerId) {
+    if (authStore().isMainUser(ownerId)) {
+        router.push(`/room/${roomId}`)
+    } else {
+        router.push(`/join-room/${roomId}`)
+    }
 }
 </script>

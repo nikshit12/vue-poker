@@ -7,6 +7,7 @@
                 </router-link>
             </div>
             <div class="navbar-end">
+                <span v-if="authStore().isLoggedIn">{{ authStore().userEmail }}</span>
                 <button v-if="authStore().isLoggedIn" @click="handleLogoutClick" class="button is-light ml-3 my-2">
                     <strong>Logout</strong>
                 </button>
