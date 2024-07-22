@@ -38,7 +38,7 @@ export const ticketStore = defineStore('ticketStore', () => {
       ownerEmail: useAuthStore.userEmail,
       ownerId: useAuthStore.userId,
       roomId,
-      averageEstimate: 0
+      estimation: []
     })
   }
 
