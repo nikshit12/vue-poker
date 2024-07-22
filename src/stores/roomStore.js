@@ -8,7 +8,8 @@ import {
   arrayUnion,
   onSnapshot,
   query,
-  orderBy
+  orderBy,
+  where
 } from 'firebase/firestore'
 import { db } from '@/firebase/firebase.js'
 import { authStore } from '@/stores/authStore'
@@ -32,7 +33,8 @@ export const roomStore = defineStore('roomStore', () => {
     collectionRef = collection(db, collectionsData.roomTable)
     notesQueryByTimestamp = query(
       collectionRef,
-      orderBy(collectionsData.orderByField, collectionsData.order)
+      orderBy(collectionsData.orderByField, collectionsData.order),
+      where('createdBy', '==', useAuthStore.userId)
     )
     getRoom()
   }
@@ -47,7 +49,8 @@ export const roomStore = defineStore('roomStore', () => {
     await addDoc(collectionRef, {
       timeStamp,
       name: roomName.value,
-      createdBy: useAuthStore.userEmail,
+      createdBy: useAuthStore.userId,
+      ownerEmail: useAuthStore.userEmail,
       ownerId: useAuthStore.userId,
       tickets: []
     })
