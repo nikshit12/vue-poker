@@ -20,14 +20,14 @@ const collectionsData = {
   orderByField: 'timeStamp',
   order: 'desc'
 }
-let ticketCollectionRef = collection(db, collectionsData.ticketTable)
-let ticketQueryByTimestamp = null
+
 let unsubsribe = null
 let searchEventSubscribe = null
 export const ticketStore = defineStore('ticketStore', () => {
   const useAuthStore = authStore()
   const tickets = ref([])
-
+  const currentRoomTickets = ref([])
+  let ticketCollectionRef = collection(db, collectionsData.ticketTable)
   async function addTicket(roomId, name) {
     const timeStamp = new Date().getTime().toString()
 
@@ -40,8 +40,44 @@ export const ticketStore = defineStore('ticketStore', () => {
     })
   }
 
+  async function getTickets(roomId) {
+    if (unsubsribe) unsubsribe()
+    const queryStatement = query(
+      ticketCollectionRef,
+      orderBy(collectionsData.orderByField, collectionsData.order),
+      where('ownerId', '==', useAuthStore.userId),
+      where('roomId', '==', roomId)
+    )
+    unsubsribe = onSnapshot(queryStatement, (ticketsValue) => {
+      const ticketsData = []
+      ticketsValue.forEach((ticket) => {
+        ticketsData.push({ id: ticket.id, ...ticket.data() })
+      })
+      tickets.value = ticketsData
+    })
+  }
+
+  async function getCurrentRoomTickets(roomId) {
+    if (unsubsribe) unsubsribe()
+    const queryStatement = query(
+      ticketCollectionRef,
+      orderBy(collectionsData.orderByField, collectionsData.order),
+      where('roomId', '==', roomId)
+    )
+    unsubsribe = onSnapshot(queryStatement, (ticketsValue) => {
+      const ticketsData = []
+      ticketsValue.forEach((ticket) => {
+        ticketsData.push({ id: ticket.id, ...ticket.data() })
+      })
+      currentRoomTickets.value = ticketsData
+    })
+  }
+
   return {
     tickets,
-    addTicket
+    currentRoomTickets,
+    addTicket,
+    getTickets,
+    getCurrentRoomTickets
   }
 })

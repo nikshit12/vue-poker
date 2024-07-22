@@ -40,10 +40,6 @@ export const roomStore = defineStore('roomStore', () => {
     getRoom()
   }
 
-  function getTickets(roomId) {
-    return rooms.value.filter((room) => room.id == roomId).flatMap((room) => room.tickets)
-  }
-
   async function createRoom() {
     const timeStamp = new Date().getTime().toString()
 
@@ -87,7 +83,6 @@ export const roomStore = defineStore('roomStore', () => {
     rooms,
     currentTicket,
     searchedRooms,
-    getTickets,
     createRoom,
     getRoom,
     initRoomDb,
