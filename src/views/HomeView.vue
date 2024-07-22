@@ -9,7 +9,7 @@
         </div>
         <div class="cell">
           <div class="card p-4">
-            <RouterLink to="/use">Join Room</RouterLink>
+            <RouterLink to="/join">Join Room</RouterLink>
           </div>
         </div>
       </div>
@@ -20,7 +20,7 @@
         <div class="card p-4">
           <div class="mb-2">
             <p>{{ room.name }}</p>
-            <span>Created by:</span> <span>{{ room.createdBy }}</span>
+            <span>Created by:</span> <span>{{ room.ownerEmail }}</span>
           </div>
           <button class="button" @click="$router.push(`/room/${room.id}`)">Join</button>
         </div>

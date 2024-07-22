@@ -6,6 +6,10 @@ import AuthView from '@/views/AuthView.vue'
 import CreateTicketView from '@/views/CreateTicketView.vue'
 import { authStore } from '@/stores/authStore'
 import EstimateView from '@/views/EstimateView.vue'
+import VoteTicketView from '@/views/VoteTicketView.vue'
+import ShowTicketView from '@/views/ShowTicketView.vue'
+import { voterStore } from '@/stores/voterStore'
+import JoinView from '@/views/JoinView.vue'
 const routes = [
   {
     path: '/',
@@ -18,9 +22,9 @@ const routes = [
     component: CreateView
   },
   {
-    path: '/use',
-    name: 'use',
-    component: UseView
+    path: '/join',
+    name: 'join',
+    component: JoinView
   },
   {
     path: '/auth',
@@ -31,6 +35,11 @@ const routes = [
     path: '/room/:id',
     name: 'createticket',
     component: CreateTicketView
+  },
+  {
+    path: '/join-room/:id',
+    name: 'showticket',
+    component: ShowTicketView
   },
   {
     path: '/estimate/:id',

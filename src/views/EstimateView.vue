@@ -1,56 +1,53 @@
 <template>
     <div class="container">
-        <h2 class="title is-4">Estimation for: {{ useRoomStore.currentTicket.ticketName.toUpperCase() }}</h2>
-        <div class="estimation-block">
-            <span class="tag is-primary is-medium">Average estimate : {{ useRoomStore.currentTicket.averageEstimation
-                }}</span>
-            <button class="button ml-3" :disabled="useTimerStore.isTimerRunning"
-                @click="showEstimation = !showEstimation">{{ showEstimation ? 'Hide' : 'Show' }}
-                Estimation</button>
-        </div>
-        <timer></timer>
-        <div class="players-container">
-            <div class="player" v-for="player in usePlayerStore.players" :key="player">
-                {{ player.name }}
-
-                <p v-if="showEstimation">{{ player.estimation }}</p>
+        <p>Ticket: {{ useTicketStore.currentTicket.name.toUpperCase() }}</p>
+        <div class="card-container">
+            <div class="card value-card" :class="{ 'selected': selectedCard === index }" v-for="(card, index) in cards"
+                :key="card" @click="selectedCard = index">
+                {{ card }}
+            </div>
+            <div class="card value-card" :class="{ 'selected': selectedCard === -1 }" @click="selectedCard = -1">
+                ?
             </div>
         </div>
+        <button class="button" @click="handleSubmit">Submit</button>
     </div>
 </template>
+
 <script setup>
-import { roomStore } from '@/stores/roomStore';
-import { playerStore } from '@/stores/playerStore'
-import timer from '@/components/timer.vue'
-import { ref } from 'vue';
-import { timerStore } from '@/stores/timerStore';
-const useRoomStore = roomStore()
-const usePlayerStore = playerStore()
-const useTimerStore = timerStore()
-const showEstimation = ref(false)
+import { ref } from "vue"
+import { ticketStore } from "@/stores/ticketStore.js";
+import { useRoute } from "vue-router";
+
+const useTicketStore = ticketStore()
+const route = useRoute()
+const ticketId = route.params.id
+const cards = [1, 2, 3, 5, 8, 13, 21, 44]
+const selectedCard = ref(-1)
+
+function handleSubmit() {
+    ticketId
+    useTicketStore.setTicketValue(ticketId, selectedCard.value)
+}
 </script>
+
 <style lang="scss" scoped>
-.players-container {
-    position: relative;
+.card-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 20px;
-
-    .player {
-        display: inline-block;
-        position: relative;
-        height: 200px;
-        width: 200px;
-        border: 1px solid #ffffff70;
-        text-align: center;
-        border-radius: 10px;
-        padding: 20px;
-    }
+    gap: 10px;
 }
 
-.estimation-block {
-    display: flex;
-    align-items: center;
+.value-card {
+    text-align: center;
+    height: 100px;
+    align-content: center;
+    flex: 0 0 calc(33.3% - 10px);
+    box-sizing: border-box;
+    cursor: pointer;
+
+    &.selected {
+        border: 1px solid greenyellow;
+    }
 }
 </style>

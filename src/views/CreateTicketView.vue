@@ -14,12 +14,12 @@
                 </div>
             </div>
         </div>
-        <h4 class="title is-4">Your Tickets</h4>
+        <h4 class="title is-4">Tickets</h4>
         <div class="grid is-col-min-12">
-            <div v-for="ticket in tickets" :key="ticket" class="cell">
+            <div v-for="ticket in useTicketStore.tickets" :key="ticket" class="cell">
                 <div class="card p-4">
                     <div class="mb-2">
-                        <p>{{ ticket.ticketName.toUpperCase() }}</p>
+                        <p>{{ ticket.name.toUpperCase() }}</p>
                     </div>
                     <button class="button" @click="handleEstimationClick(ticket)">Get Estimation</button>
                 </div>
@@ -28,26 +28,30 @@
     </div>
 </template>
 <script setup>
+import { authStore } from "@/stores/authStore";
 import { roomStore } from "@/stores/roomStore.js";
-import { computed, ref } from "vue";
+import { ticketStore } from "@/stores/ticketStore.js";
+import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const useRoomStore = roomStore()
+const useTicketStore = ticketStore()
 const route = useRoute()
 const router = useRouter()
 const ticketName = ref('')
-const tickets = computed(() => {
-    return useRoomStore.getTickets(route.params.id)
-})
+const roomId = route.params.id
 
 function handleEstimationClick(ticket) {
     useRoomStore.currentTicket = ticket
-    router.push(`/estimate/${ticket.ticketId}`)
+    router.push(`/room/${roomId}/estimate/${ticket.ticketId}`)
 }
 
 function handleAdd() {
-    useRoomStore.addTicket(route.params.id, ticketName.value)
+    useTicketStore.addTicket(route.params.id, ticketName.value)
     ticketName.value = ""
 }
+onMounted(() => {
+    useTicketStore.getTickets(roomId)
+})
 
 </script>

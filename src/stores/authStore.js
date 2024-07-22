@@ -10,24 +10,31 @@ import {
 import { ref } from 'vue'
 import router from '@/router'
 import { roomStore } from '@/stores/roomStore'
+import { voterStore } from '@/stores/voterStore'
 export const authStore = defineStore('authStore', () => {
   const userEmail = ref('')
   const userId = ref(null)
   const isLoggedIn = ref(false)
 
+  function isMainUser(visitorId) {
+    return userId.value == visitorId
+  }
+
   function init() {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        isLoggedIn.value = true
-        userEmail.value = user.email
-        userId.value = user.uid
-        executeOnLoginFunctions()
-        router.push('/')
-      } else {
-        isLoggedIn.value = false
-        router.replace('/auth')
-      }
-    })
+    if (!voterStore().voteMode) {
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          isLoggedIn.value = true
+          userEmail.value = user.email
+          userId.value = user.uid
+          executeOnLoginFunctions()
+          router.push('/')
+        } else {
+          isLoggedIn.value = false
+          router.replace('/auth')
+        }
+      })
+    }
   }
 
   function registerUser(cred) {
@@ -63,5 +70,5 @@ export const authStore = defineStore('authStore', () => {
     roomStore().initRoomDb()
   }
 
-  return { userEmail, userId, isLoggedIn, init, registerUser, loginUser, logoutUser }
+  return { userEmail, userId, isLoggedIn, init, registerUser, loginUser, logoutUser, isMainUser }
 })
