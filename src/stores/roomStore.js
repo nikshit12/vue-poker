@@ -57,27 +57,6 @@ export const roomStore = defineStore('roomStore', () => {
     })
   }
 
-  async function addTicket(roomid, name) {
-    const roomRef = doc(roomsCollectionRef, roomid)
-    const timeStamp = new Date().getTime().toString()
-    const newTicket = {
-      ticketId: useUniqueId().uniqeId(),
-      ticketName: name,
-      timeStamp,
-      totalEstimation: [],
-      averageEstimation: 0,
-      link: ''
-    }
-    updateDoc(roomRef, {
-      tickets: arrayUnion(newTicket)
-    })
-      .then(() => {
-        console.log('Ticket added successfully!')
-      })
-      .catch((error) => {
-        console.error('Error adding ticket: ', error)
-      })
-  }
   async function getRoom() {
     if (unsubsribe) unsubsribe()
     unsubsribe = onSnapshot(roomsQueryByTimestamp, (roomsValue) => {
@@ -112,7 +91,6 @@ export const roomStore = defineStore('roomStore', () => {
     createRoom,
     getRoom,
     initRoomDb,
-    addTicket,
     searchRoomByName
   }
 })

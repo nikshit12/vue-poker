@@ -29,10 +29,12 @@
 </template>
 <script setup>
 import { roomStore } from "@/stores/roomStore.js";
+import { ticketStore } from "@/stores/ticketStore.js";
 import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 const useRoomStore = roomStore()
+const useTicketStore = ticketStore()
 const route = useRoute()
 const router = useRouter()
 const ticketName = ref('')
@@ -47,7 +49,7 @@ function handleEstimationClick(ticket) {
 }
 
 function handleAdd() {
-    useRoomStore.addTicket(route.params.id, ticketName.value)
+    useTicketStore.addTicket(route.params.id, ticketName.value)
     ticketName.value = ""
 }
 
