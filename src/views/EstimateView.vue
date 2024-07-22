@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <p>Ticket:</p>
+        <p>Ticket: {{ useTicketStore.currentTicket.name.toUpperCase() }}</p>
         <div class="card-container">
             <div class="card value-card" :class="{ 'selected': selectedCard === index }" v-for="(card, index) in cards"
                 :key="card" @click="selectedCard = index">
@@ -16,12 +16,18 @@
 
 <script setup>
 import { ref } from "vue"
+import { ticketStore } from "@/stores/ticketStore.js";
+import { useRoute } from "vue-router";
 
+const useTicketStore = ticketStore()
+const route = useRoute()
+const ticketId = route.params.id
 const cards = [1, 2, 3, 5, 8, 13, 21, 44]
 const selectedCard = ref(-1)
 
 function handleSubmit() {
-    // selectedCard.value
+    ticketId
+    useTicketStore.setTicketValue(ticketId, selectedCard.value)
 }
 </script>
 

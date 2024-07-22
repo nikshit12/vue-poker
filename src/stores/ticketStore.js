@@ -22,11 +22,12 @@ const collectionsData = {
 }
 
 let unsubsribe = null
-let searchEventSubscribe = null
+let getTicketIdSubscribe = null
 export const ticketStore = defineStore('ticketStore', () => {
   const useAuthStore = authStore()
   const tickets = ref([])
   const currentRoomTickets = ref([])
+  const currentTicket = ref({})
   let ticketCollectionRef = collection(db, collectionsData.ticketTable)
   async function addTicket(roomId, name) {
     const timeStamp = new Date().getTime().toString()
@@ -36,8 +37,13 @@ export const ticketStore = defineStore('ticketStore', () => {
       name,
       ownerEmail: useAuthStore.userEmail,
       ownerId: useAuthStore.userId,
-      roomId
+      roomId,
+      averageEstimate: 0
     })
+  }
+
+  async function setTicketValue(id, value) {
+    console.log(id, value)
   }
 
   async function getTickets(roomId) {
@@ -76,8 +82,10 @@ export const ticketStore = defineStore('ticketStore', () => {
   return {
     tickets,
     currentRoomTickets,
+    currentTicket,
     addTicket,
     getTickets,
-    getCurrentRoomTickets
+    getCurrentRoomTickets,
+    setTicketValue
   }
 })
